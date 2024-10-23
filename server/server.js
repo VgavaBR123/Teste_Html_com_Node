@@ -1,18 +1,14 @@
 const express = require('express');
-const path = require('path');
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Servir arquivos estáticos (HTML, CSS, JS) da pasta 'public'
-app.use(express.static(path.join(__dirname, '../public')));
+// Middleware para servir os arquivos estáticos
+app.use(express.static('public'));
 
-// Endpoint para enviar dados para a página HTML
 app.get('/api/dados', (req, res) => {
-    const dados = { valor: Math.random().toFixed(2) * 100 }; // Valor aleatório para teste
-    res.json(dados);
+  res.json({ mensagem: 'Dados enviados do backend!' });
 });
 
-// Inicia o servidor
 app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
