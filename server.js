@@ -1,16 +1,17 @@
-// server.js
 const express = require('express');
-const cors = require('cors');
+const path = require('path'); // Importa o módulo path
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+// Configura o Express para servir arquivos estáticos da pasta 'public'
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Endpoint que responde à solicitação do botão
-app.get('/api/message', (req, res) => {
-  res.json({ message: 'Mensagem recebida do servidor!' });
+// Define uma rota para a página principal
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html')); // Envia o arquivo index.html
 });
 
-app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
+// Inicia o servidor
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });

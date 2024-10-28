@@ -1,34 +1,17 @@
 {
-<<<<<<< HEAD
   "name": "html_com_node.js",
   "version": "1.0.0",
+  "description": "Aplicação simples com HTML e Node.js",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-=======
-  "name": "projeto_teste_connection",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node api/server.js"
->>>>>>> 161eb2a97a2d390f721dfa0966e6ede2e2e0d7fb
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "keywords": [],
   "dependencies": {
-<<<<<<< HEAD
     "cors": "^2.8.5",
     "express": "^4.21.1"
   }
 }
-
-
-=======
-    "express": "^4.21.1"
-  }
-}
->>>>>>> 161eb2a97a2d390f721dfa0966e6ede2e2e0d7fb
