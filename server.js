@@ -1,27 +1,21 @@
-const mysql = require('mysql2');
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root', // Substitua pelo seu usuário MySQL
-    password: '1437965124Xx@', // Substitua pela sua senha MySQL
-    database: 'meu_site' // Substitua pelo nome do seu banco de dados
+// Middleware para parsing de JSON
+app.use(express.json());
+
+// Rota para receber mensagens
+app.post('/send-message', (req, res) => {
+    const { message } = req.body; // Pega a mensagem do corpo da requisição
+    if (!message) {
+        return res.status(400).json({ error: 'Mensagem não fornecida' });
+    }
+    // Retorna a mesma mensagem recebida
+    res.json({ message });
 });
 
-// Função de handler que pode ser usada, por exemplo, em uma API
-exports.handler = (event, context) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM dados'; // Substitua 'dados' pelo nome da sua tabela
-        connection.query(sql, (error, results) => {
-            if (error) {
-                return reject({
-                    statusCode: 500,
-                    body: JSON.stringify({ error: 'Erro ao consultar dados' }),
-                });
-            }
-            resolve({
-                statusCode: 200,
-                body: JSON.stringify(results),
-            });
-        });
-    });
-};
+// Iniciar o servidor
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+});
