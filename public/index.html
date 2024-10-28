@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dados do MySQL com Node.js</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Dados do MySQL</h1>
+    <button onclick="buscarDados()">Mostrar Dados</button>
+    <table id="tabela-dados">
+        <tr>
+            <th>ID</th>
+            <th>Valor</th>
+            <th>Data e Hora</th>
+        </tr>
+    </table>
+
+    <script>
+        function buscarDados() {
+            fetch('/consultar-dados')
+                .then(response => response.json())
+                .then(dados => {
+                    const tabela = document.getElementById('tabela-dados');
+
+                    // Limpar dados antigos da tabela, se houver
+                    tabela.innerHTML = `
+                        <tr>
+                            <th>ID</th>
+                            <th>Valor</th>
+                            <th>Data e Hora</th>
+                        </tr>
+                    `;
+
+                    // Inserir cada linha de dados na tabela
+                    dados.forEach(dado => {
+                        const linha = tabela.insertRow();
+                        linha.insertCell(0).innerText = dado.id; // Substitua 'id' pelo nome da coluna do seu banco
+                        linha.insertCell(1).innerText = dado.valor; // Substitua 'valor' pelo nome da coluna do seu banco
+                        linha.insertCell(2).innerText = dado.timestamp; // Substitua 'timestamp' pelo nome da coluna do seu banco
+                    });
+                })
+                .catch(error => console.error('Erro ao buscar dados:', error));
+        }
+    </script>
+
+</body>
+</html>
