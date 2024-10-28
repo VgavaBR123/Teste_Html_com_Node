@@ -1,0 +1,12 @@
+version: 1
+services:
+  - type: web
+    name: simple-backend
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    plan: free
+    routes:
+      - type: frontend
+        path: /
+        rewrite: /

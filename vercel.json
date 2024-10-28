@@ -9,7 +9,7 @@
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "spi.js"
+            "dest": "api.js"
         }
     ]
 }
