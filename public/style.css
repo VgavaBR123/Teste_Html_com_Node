@@ -1,0 +1,16 @@
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 50px;
+  }
+  
+  form {
+    display: inline-block;
+  }
+  
+  input, button {
+    padding: 10px;
+    margin: 5px;
+  }
+  
