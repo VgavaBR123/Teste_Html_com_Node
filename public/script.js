@@ -1,19 +1,27 @@
-document.getElementById('dataForm').addEventListener('submit', function(event) {
-  event.preventDefault();
+document.getElementById('dataForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+
   const valor = document.getElementById('valor').value;
 
   fetch('/api/data', {
       method: 'POST',
       headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ valor }),
+      body: JSON.stringify({ valor })
   })
-  .then(response => response.json())
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Erro ao salvar os dados');
+      }
+      return response.json();
+  })
   .then(data => {
-      console.log('Dados salvos com sucesso:', data);
+      document.getElementById('resultado').innerText = `Dados salvos com sucesso: ${data.valor} (ID: ${data.id})`;
+      document.getElementById('dataForm').reset();
   })
-  .catch((error) => {
-      console.error('Erro ao salvar dados:', error);
+  .catch(error => {
+      console.error('Erro ao enviar dados:', error);
+      document.getElementById('resultado').innerText = 'Erro ao salvar os dados.';
   });
 });

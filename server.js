@@ -1,41 +1,45 @@
 const express = require('express');
+const mysql = require('mysql2');
+const cors = require('cors');
 const bodyParser = require('body-parser');
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = 3000;
 
-// Configurar middleware
-app.use(bodyParser.urlencoded({ extended: true }));
+// Configuração do middleware
+app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
-// Configurar banco de dados SQLite
-const db = new sqlite3.Database('database.sqlite', (err) => {
-    if (err) {
-        console.error(err.message);
-    }
-    console.log('Conectado ao banco de dados SQLite.');
+// Configuração do banco de dados
+const db = mysql.createConnection({
+    host: 'localhost', // ou seu host do MySQL
+    user: 'root', // seu usuário do MySQL
+    password: '', // sua senha do MySQL
+    database: 'meu_banco' // seu banco de dados
 });
 
-// Criar tabela se não existir
-db.run(`CREATE TABLE IF NOT EXISTS dados (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    valor TEXT
-)`);
+// Conectar ao banco de dados
+db.connect(err => {
+    if (err) throw err;
+    console.log('Conectado ao banco de dados MySQL!');
+});
 
-// Rota para receber dados
+// Rota para salvar dados
 app.post('/api/data', (req, res) => {
     const { valor } = req.body;
-    db.run(`INSERT INTO dados (valor) VALUES (?)`, [valor], function(err) {
+
+    const sql = 'INSERT INTO testes (valor) VALUES (?)';
+    db.query(sql, [valor], (err, result) => {
         if (err) {
-            return console.log(err.message);
+            console.error(err);
+            return res.status(500).json({ error: 'Erro ao salvar os dados.' });
         }
-        res.json({ id: this.lastID });
+        res.json({ id: result.insertId, valor });
     });
 });
 
-app.listen(PORT, () => {
-    console.log(`Servidor está rodando na porta ${PORT}`);
+// Iniciar o servidor
+app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`);
 });
