@@ -1,26 +1,42 @@
-// server.js
 const express = require('express');
-const path = require('path');
+const sqlite3 = require('sqlite3').verbose();
+const bodyParser = require('body-parser');
+
 const app = express();
+const db = new sqlite3.Database('./database.db');
+
+// Middleware
+app.use(express.static('public'));
+app.use(bodyParser.json());
+
+// Criar a tabela no banco de dados
+db.serialize(() => {
+  db.run(`CREATE TABLE IF NOT EXISTS messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    content TEXT
+  )`);
+});
+
+// Endpoint para salvar a mensagem no banco de dados
+app.post('/api/messages', (req, res) => {
+  const content = req.body.content;
+
+  if (!content) {
+    return res.status(400).json({ error: 'Content is required' });
+  }
+
+  const stmt = db.prepare('INSERT INTO messages (content) VALUES (?)');
+  stmt.run(content, function(err) {
+    if (err) {
+      return res.status(500).json({ error: 'Database error' });
+    }
+    res.json({ message: 'Message saved', id: this.lastID });
+  });
+  stmt.finalize();
+});
+
+// Porta de conexão do servidor
 const PORT = process.env.PORT || 3000;
-
-
-// Configura o Express para servir arquivos estáticos
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Rota para a página principal
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// API exemplo para envio de dados do cliente ao servidor
-app.post('/api/data', express.json(), (req, res) => {
-  const data = req.body;
-  console.log('Dados recebidos:', data);
-  res.json({ message: 'Dados recebidos com sucesso!' });
-});
-
-// Inicia o servidor
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando na porta ${PORT}`);
 });

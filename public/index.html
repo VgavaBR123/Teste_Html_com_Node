@@ -1,19 +1,17 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Integração HTML com Node.js</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salvando Mensagem</title>
 </head>
 <body>
-  <h1>Envie Dados para o Servidor</h1>
-  <form id="dataForm">
-    <label for="dataInput">Digite algo:</label>
-    <input type="text" id="dataInput" name="dataInput" required />
+  <h1>Digite uma Mensagem</h1>
+  <form id="messageForm">
+    <input type="text" id="messageInput" placeholder="Digite sua mensagem" required>
     <button type="submit">Enviar</button>
   </form>
-
+  <p id="responseMessage"></p>
   <script src="script.js"></script>
 </body>
 </html>

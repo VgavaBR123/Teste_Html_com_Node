@@ -1,21 +1,25 @@
-// script.js
-document.getElementById('dataForm').addEventListener('submit', async (event) => {
-    event.preventDefault();
+document.getElementById('messageForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
   
-    const dataInput = document.getElementById('dataInput').value;
+    const messageContent = document.getElementById('messageInput').value;
   
     try {
-      const response = await fetch('/api/data', {
+      const response = await fetch('/api/messages', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: dataInput }),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ content: messageContent })
       });
   
       const result = await response.json();
-      console.log(result.message);
-      alert(result.message);
+      document.getElementById('responseMessage').innerText = result.message;
+  
+      // Limpar o campo de entrada
+      document.getElementById('messageInput').value = '';
     } catch (error) {
-      console.error('Erro ao enviar dados:', error);
+      console.error('Erro ao enviar a mensagem:', error);
+      document.getElementById('responseMessage').innerText = 'Erro ao salvar a mensagem.';
     }
   });
   
